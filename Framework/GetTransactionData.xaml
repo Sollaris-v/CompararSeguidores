@@ -1,0 +1,473 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="GetTransactionData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ue="clr-namespace:UiPath.Excel;assembly=UiPath.Excel.Activities" xmlns:ueab="clr-namespace:UiPath.Excel.Activities.Business;assembly=UiPath.Excel.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Sequential counter of transaction items." Name="in_TransactionNumber" Type="InArgument(x:Int32)" />
+    <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property sap2010:Annotation.AnnotationText="Transaction item to be processed." Name="out_TransactionItem" Type="OutArgument(ui:QueueItem)" />
+    <x:Property sap2010:Annotation.AnnotationText="Allow the optional addition of information about the transaction item." Name="out_TransactionField1" Type="OutArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Allow the optional addition of information about the transaction item." Name="out_TransactionField2" Type="OutArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Transaction ID used for information and logging purposes. Ideally, the ID should be unique for each transaction. " Name="out_TransactionID" Type="OutArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="This variable can be used in case transactions are stored in a DataTable (for example, after being retrieved from a spreadsheet)." Name="io_dt_TransactionData" Type="InOutArgument(sd:DataTable)" />
+  </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1234,4693</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>GetTransactionData_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="43">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>Microsoft.Activities</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>UiPath.UIAutomationNext.Enums</x:String>
+      <x:String>UiPath.UIAutomationCore.Contracts</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities</x:String>
+      <x:String>UiPath.Platform.ObjectLibrary</x:String>
+      <x:String>UiPath.Shared.Activities</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.Excel.Activities.Business</x:String>
+      <x:String>UiPath.Excel.Model</x:String>
+      <x:String>UiPath.UIAutomationNext.Models.ExtractData</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>UiPath.UIAutomationNext.Activities.Models</x:String>
+      <x:String>UiPath.UIAutomationNext.Contracts</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="102">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>Microsoft.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Data.Entity</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationNext.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>UiPath.Testing.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.Workflow</AssemblyReference>
+      <AssemblyReference>NPOI</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>Microsoft.Win32.Primitives</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Private.Xml</AssemblyReference>
+      <AssemblyReference>System.Data.SqlClient</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <sap:WorkflowViewStateService.ViewState>
+    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+      <x:Boolean x:Key="ShouldCollapseAll">False</x:Boolean>
+      <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
+    </scg:Dictionary>
+  </sap:WorkflowViewStateService.ViewState>
+  <Sequence sap2010:Annotation.AnnotationText="" DisplayName="Get Transaction Data" sap:VirtualizedContainerService.HintSize="794,4628" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="perfil" />
+      <Variable x:TypeArguments="x:String" Name="seguidores" />
+      <Variable x:TypeArguments="x:String" Name="seguindo" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ueab:ExcelProcessScopeX DisplayAlerts="{x:Null}" ExistingProcessAction="{x:Null}" FileConflictResolution="{x:Null}" LaunchMethod="{x:Null}" LaunchTimeout="{x:Null}" MacroSettings="{x:Null}" ProcessMode="{x:Null}" ShowExcelWindow="{x:Null}" DisplayName="Excel Process Scope" sap:VirtualizedContainerService.HintSize="732,743" sap2010:WorkflowViewState.IdRef="ExcelProcessScopeX_1">
+      <ueab:ExcelProcessScopeX.Body>
+        <ActivityAction x:TypeArguments="ui:IExcelProcess">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="ui:IExcelProcess" Name="ExcelProcessScopeTag" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Fazer" sap:VirtualizedContainerService.HintSize="602,656" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ueab:ExcelApplicationCard Password="{x:Null}" ReadFormatting="{x:Null}" DisplayName="Use Excel File" sap:VirtualizedContainerService.HintSize="540,545" sap2010:WorkflowViewState.IdRef="ExcelApplicationCard_1" ResizeWindow="None" WorkbookPath="Data\Output\Planilha.xlsx">
+              <ueab:ExcelApplicationCard.Body>
+                <ActivityAction x:TypeArguments="ue:IWorkbookQuickHandle">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="ue:IWorkbookQuickHandle" Name="Excel" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Fazer" sap:VirtualizedContainerService.HintSize="506,272" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ueab:ReadCellValueX Cell="[Excel.Sheet(&quot;Seguidores&quot;).Cell(&quot;B1&quot;)]" DisplayName="Read Cell Value" GetFormattedText="True" sap:VirtualizedContainerService.HintSize="444,161" sap2010:WorkflowViewState.IdRef="ReadCellValueX_1">
+                      <ueab:ReadCellValueX.SaveTo>
+                        <OutArgument x:TypeArguments="x:String">[perfil]</OutArgument>
+                      </ueab:ReadCellValueX.SaveTo>
+                    </ueab:ReadCellValueX>
+                  </Sequence>
+                </ActivityAction>
+              </ueab:ExcelApplicationCard.Body>
+            </ueab:ExcelApplicationCard>
+          </Sequence>
+        </ActivityAction>
+      </ueab:ExcelProcessScopeX.Body>
+    </ueab:ExcelProcessScopeX>
+    <uix:NApplicationCard AttachMode="ByInstance" DisplayName="Use Browser Chrome: Vinícius Oliveira (@sollaris.v) • Fotos e vídeos do Instagram" sap:VirtualizedContainerService.HintSize="732,3703" sap2010:WorkflowViewState.IdRef="NApplicationCard_1" InteractionMode="DebuggerApi" ScopeGuid="0361e395-2e13-4b19-b55b-901f3a4d9550" Version="V2">
+      <uix:NApplicationCard.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="WSSessionData" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Fazer" sap:VirtualizedContainerService.HintSize="698,3485" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="sd:DataTable" Default="[New System.Data.DataTable]" Name="ExtractDataTable" />
+              <Variable x:TypeArguments="x:Int32" Name="contador" />
+              <Variable x:TypeArguments="x:Int32" Name="limiteSeguidores" />
+              <Variable x:TypeArguments="sd:DataTable" Name="dt_Seguidores" />
+              <Variable x:TypeArguments="x:Int32" Name="seguidoresInt" />
+              <Variable x:TypeArguments="x:Int32" Name="limiteSeguindo" />
+              <Variable x:TypeArguments="x:Int32" Name="seguindoInt" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <uix:NGetAttribute Attribute="innerhtml" DisplayName="Get Attribute '1.665'" sap:VirtualizedContainerService.HintSize="636,209" sap2010:WorkflowViewState.IdRef="NGetAttribute_1" ScopeIdentifier="0361e395-2e13-4b19-b55b-901f3a4d9550" Version="V3">
+              <uix:NGetAttribute.Result>
+                <OutArgument x:TypeArguments="x:String">[seguidores]</OutArgument>
+              </uix:NGetAttribute.Result>
+              <uix:NGetAttribute.Target>
+                <uix:TargetAnchorable BrowserURL="https://www.instagram.com/jefistag/?hl=pt-br" DesignTimeRectangle="1133, 210, 37, 21" DesignTimeScaleFactor="1" ElementType="Text" FriendlyName="'1.665'" FullSelectorArgument="&lt;webctrl aaname='1.665' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname='*' tag='SPAN' type='' class='' check:innerText='*' /&gt;" Guid="d1c4e492-fce4-48c9-aea6-61ebbbc1a574" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAACkAAAAZCAYAAACsGgdbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGxSURBVFhH7ZUvksMgFMb3DLlITtAbxPUEkXVxcb1B3brIOBwOicPFIXE4HLLmWyB/oJnOlrbZme5MxM+89wFf3uORr6Io8OnsJrdiN7kVu8mt+J8mD00PoSyuhqNd5W4pUX8zSOO01+uIZmie0rTgZoqnyD7ZIzV5ZtDpggcmj72E9TqrITkFYQJyoDcmH2t6yDkvZYSelz080aTf0EiwjkE9MnmkUVPeyedqZpOryq25cyenhb+YbLlx1bYQl/t5T46mqF33/sZkBapc/qrAiITxWo81GLoaZbbG0fKYC1gYSdCsKv+CyeSyT3eN8tmIq9w5V+Oo3ZAOHJRQ8EFC23GNdZWtkjPfMKnBTjFeETUeIC6ZmhhfKC8QwagCrWL8jXZL9Gl8bl24XzmaJJ7QS7/OgLcx9tLgnJgOFRm6cokd6Vglw5tsTVnGXOBIxhfBf1xyL7NMtuFAC9lXo6ZymtAWAxXeNj29h27zuU0Zmpa7mJYQjIAJtQyR4W0cLsdTJhWpF11ZdxA6/kmMFujq28o80tR+8qdhCRiNgTQ4JHt47pj8PHaTW7Gb3Ip/YLLAD0aSvT+CquxuAAAAAElFTkSuQmCC" InformativeScreenshot="d3b7605a32cc41d00870f14298f2a5d8.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Jeferson Staggemeier (@jefistag) • Fotos e vídeos do Instagram' /&gt;" SearchSteps="FuzzySelector, Image" Version="V1" Visibility="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                      <uix:Target DesignTimeRectangle="978, 208, 115, 26" FriendlyName="'728 publicações'" FullSelectorArgument="&lt;webctrl aaname=' publicações' tag='DIV' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname=' publicações' tag='DIV' type='' class='_aacl _aacp _aacu _aacx _aad6 _aade' check:innerText='728 publicações' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAHYAAAAcCAYAAAC0yEstAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOvSURBVGhD7ZgvvqMwEMf3DL0IJ+gN6nqCyrrncNxgXd2TOBwOicPVReJwOGTNbCaZkMkfaPd9Hvu2fCJ+oskwmcw3M4T+OhwOkLQ/JbA7VQK7UyWwO1UCu1MlsDtVArtTJbA71f7AlgIeDwFlbG5WDu34gLHNnd8PUTKb95YFm7cwPuTmFiRKtMvgcmtAjJOdG3tob2fH6eFYQC1GmIzNNIKoCzhym630JmBLoXOjY5DrixbyiN1XZcFeSuiEAOGoJ9g91Ge0K0EQzHvbyGAGgjdAczVOr9AMFLRooKrwIOjfQ3Mlmw31JbD/WjKPowbpAo7Zfk2rrTj7vKtFp66gsRxutwtkzObaDATtQmMGPjuBphv8i4p4C7DbawWsqbweqlNsXutU9x7YM9Q9PjdCWxzl7yMU7ahs+tpr2Uzq5CJ4BQafJx+5tcnRj3841KFhdjNYOmAkF2K8FcdsbCzmdYRyfUcPkrMPKX7QV31bmWrWcnMR+nDnF8GG1RpRZpzzVszHrTBpvNJ9zZtg4BRIFvDrYNEXSzZ1jGWQ/m8Cx9eSfk3y81Y4SVSxM3B+3Mr//A6N+A7iYwfd2Kh9WZ/+vB/TAtgTVKrqPGBc8oLUDPoS5UI7y0VxfIKhq+U7toZO2U0yMU8q1jnVKDfhr4PlSdVSz87+18G6ti9IrWkOkgYXq0DUkm9nXO3J7wI8Rj/+UHGw1wYGPFV9BafIfPZRQz8heAmv8Sqx6PSF6v5px7NPuOPY1EHBbZmCExoZfx3sUms04+tgcc21pKFULLinWeQ7CsVq0Td/TsXKfVvNz8428bWiYItOV6Ios2AuUwFIh9MQfuagaMG+wverGT9SB1jf8HuApVbKq477/i6wL3YMe8DcNSNg9Sajl6aT3BRW6iSdqM+fiAhstGKfbDgE67Y1p10ZqfWeg3X9r4ONrmMU8++MfVcrDl8nywrXDMFeqA0PDVz8OQNNVqv7vStV0yWLXZz871hM3NIFSiWebNwxlkTqFnYDVD0BWDnGk0dj9rl1sLNfftCkD/V8kHQTg41TVxG3kf5fuDz58fkHoJR51mtwf6hXwFISpu63Oy71oQLGTUTEAz1+QPWX/zyZijKAtbzKkNJJY/N+olX8ctwAJvFNPweLMsDYWjQXxGDWnJ/1bZ75jlUnwWV2frx8zt3f0uXpB+S2yp0ID90P7SmB3VLUYhff1xsqgd1c2DZjrXZbJbAbar4v/MC+/huwSd+rBHanSmB3qgR2lzrAH+biZ8xxk/vOAAAAAElFTkSuQmCC" SearchSteps="FuzzySelector, Image" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NGetAttribute.Target>
+            </uix:NGetAttribute>
+            <uix:NGetAttribute Attribute="innerhtml" DisplayName="Get Attribute '464'" sap:VirtualizedContainerService.HintSize="636,209" sap2010:WorkflowViewState.IdRef="NGetAttribute_3" ScopeIdentifier="0361e395-2e13-4b19-b55b-901f3a4d9550" Version="V3">
+              <uix:NGetAttribute.Result>
+                <OutArgument x:TypeArguments="x:String">[seguindo]</OutArgument>
+              </uix:NGetAttribute.Result>
+              <uix:NGetAttribute.Target>
+                <uix:TargetAnchorable BrowserURL="https://www.instagram.com/sollaris.v/?hl=pt-br" DesignTimeRectangle="1266, 202, 27, 21" DesignTimeScaleFactor="1" ElementType="Text" FriendlyName="'464'" FullSelectorArgument="&lt;webctrl aaname='464' tag='SPAN' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname='*' tag='SPAN' type='' class='' check:innerText='*' /&gt;" Guid="5b8373c9-98f2-4a3b-a004-31d3a7e373da" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAB8AAAAZCAYAAADJ9/UkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFjSURBVEhL7ZStkoUgGIb3GrwRbsTmFRhtp9nOHZy2zUiz0Yg0m41oo9GIlncBxeMPus7O7Lgza3hmFPjeRz7FjyRJcBW3/BJu+SX8VXkBrnr0fQ9J13ME+SeH1MbPexTHY7EmsJ+zK0+pnILXRZmdM27OKEjBUPMGsmVR+VFOXJ5SSNPDWDZFGUPnwrRASWbjMY5yLBF5BiptO214LfSmqPRjBs1rXhPjOMexkpMxXEOU4XpelIJ1bhcdeC2hXQccRqOtcpDTOQMLeXiXWpQ+aFtUQuggHN43E+EhbDeeZ3MGJjkphQ8xkiIbx/blCrwIY/ajqju/zjSvkzkDkzws2EeCTm1317OgUdhb4bmclTyn9rhIuaAbW2yUu2d42nUFV36srcgkz9iwcy0ep3MW8hjRdo3Hx31MnQ9X45m3O0pn62Z82/YYe0Ukr9Co999NqwZV/u7Emh/Jf5tbfgn/VZ7gC5J2NezxMu38AAAAAElFTkSuQmCC" InformativeScreenshot="2fab63cfe7f0bc5a973be7351c8cf78c.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Vinícius Oliveira (@sollaris.v) • Fotos e vídeos do Instagram' /&gt;" SearchSteps="FuzzySelector, Image" Version="V1" Visibility="Interactive">
+                  <uix:TargetAnchorable.Anchors>
+                    <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                      <uix:Target DesignTimeRectangle="1118, 201, 108, 24" FriendlyName="'422 seguidores'" FullSelectorArgument="&lt;webctrl aaname=' seguidores' tag='DIV' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname=' seguidores' tag='DIV' type='' class='_aacl _aacp _aacu _aacx _aad6 _aade' check:innerText='422 seguidores' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAHAAAAAcCAYAAAC51jtqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAL/SURBVGhD7ZcrkuMwEIb3DLmIT7A3GJYTBA4bZpZT5AZmy8IMzYYNEzQzMzMU6W297Fa7/Zqp2oq8An/NJN2W1P8ntZVfl8sFstJVBpi4MsDElQEmrgwwcWWAiSsDTFwZYOLKAKnKBnqtQVVCjKhSGrSqxNi/1iLA4vEFAxaj+wbK8fsCbo8aVD+ANjEbb6F5XMmze3JeVOcBWELTB/MpwAqUB/LV1NCozkHWHdTvR3LS1ssDLJse9DAIJ7CEx+MGBcl9rzsLuqtvB3LS1ksDLHwbaf88/UmiAOd6e7abcPbkhPZlT70wrzVtjPfQlORZlN10NF6Z8UhepYRaXLcYW6ZdAx/bd5QgBCcBjOefx+38WkFl/2KcrGW9NtINhXgM8IqLHTQMOPl1bIUrAIsw+Ep73JPDjTSLVqxAaog1YSrEmYfmhPho+k8BunjflP4zAUXW4wDQ+X3NdL4AjoHdqo3Hy0YtAAxGD7iQq/luA+DvO9Sdu6iYAmnLPJRjJO58GqPmGLm1OmM5fC8+5jcAWlhC/ZGpS2uX5ud5m7XR/2nOJA/wiosyRpsJCh9cBlh8PKHFk6r1gG1RBrMnh8rtYmJMUNi5gmxhogkoycCDAM2aJPMigOK4Rs78cWxbB1vnVm1RjlAjygP0sFYUBgzvSD10iz8N9uTI8l3APLtpkFfqANdqI5resfEYHuAdnkqBihSu/z20+PmzwgvIGxZsTtXYZgXtydkSLZaD4PKbZTQqyI7BAHID+bMCwLnBfpN9q4VK86/UNhPbcKj4EhPJn0pagF2EgdMx2KjnfX8OFxai6E6PivWGMSMrHC+YYY2OzPFrj8xx300najrtSwDd5/gUHrrEkBwR4GZtGCeXuR8D/BiPsSC/2D05M3mjptyFQkkOb23OxCB8XtrdYXNZmRgzRHqGrc3MG7VQr3h+ofWKAI3WapvHKDyjFYCJS4JxQp0W4NJPgLPpFAArJbdK3m7OqFMAnK7Yy++Ks+q878D/RBlg4soAE1cGmLQu8Bc9hkGDJELRhQAAAABJRU5ErkJggg==" SearchSteps="FuzzySelector, Image" />
+                    </scg:List>
+                  </uix:TargetAnchorable.Anchors>
+                </uix:TargetAnchorable>
+              </uix:NGetAttribute.Target>
+            </uix:NGetAttribute>
+            <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="636,225" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+              <ui:MultipleAssign.AssignOperations>
+                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:Int32">[contador]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:Int32">0</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:Int32">[seguidoresInt]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:Int32">[integer.Parse(seguidores)]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:Int32">[limiteSeguidores]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:Int32" xml:space="preserve">[Convert.ToInt32(seguidoresInt  / 11)]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:Int32">[seguindoInt]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:Int32">[integer.Parse(seguindo)]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:Int32">[limiteSeguindo]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:Int32" xml:space="preserve">[Convert.ToInt32(seguindoInt  / 11)]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                </scg:List>
+              </ui:MultipleAssign.AssignOperations>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:MultipleAssign>
+            <Sequence DisplayName="Extrair seguidores" sap:VirtualizedContainerService.HintSize="636,83" sap2010:WorkflowViewState.IdRef="Sequence_9">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <uix:NGoToUrl DisplayName="Go To URL" sap:VirtualizedContainerService.HintSize="574,83" sap2010:WorkflowViewState.IdRef="NGoToUrl_1" Url="[&quot;https://www.instagram.com/&quot; + perfil + &quot;/followers/&quot;]" Version="V3">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </uix:NGoToUrl>
+              <If Condition="[limiteSeguidores &gt;= 1000]" sap:VirtualizedContainerService.HintSize="574,477" sap2010:WorkflowViewState.IdRef="If_1">
+                <If.Then>
+                  <Sequence sap:VirtualizedContainerService.HintSize="496,194" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="434,83" sap2010:WorkflowViewState.IdRef="Assign_2">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[limiteSeguidores]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">1000</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                </If.Then>
+                <If.Else>
+                  <Sequence sap:VirtualizedContainerService.HintSize="400,104" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Sequence>
+                </If.Else>
+              </If>
+              <uix:NClick ClickType="Single" DisplayName="Click 'Seguidores'" sap:VirtualizedContainerService.HintSize="574,158" sap2010:WorkflowViewState.IdRef="NClick_1" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="0361e395-2e13-4b19-b55b-901f3a4d9550" Version="V3">
+                <uix:NClick.Target>
+                  <uix:TargetAnchorable BrowserURL="https://www.instagram.com/sollaris.v/followers/" DesignTimeRectangle="919, 389, 81, 24" DesignTimeScaleFactor="1" ElementType="Text" FriendlyName="'Seguidores'" FullSelectorArgument="&lt;webctrl aaname='Seguidores' tag='DIV' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname='Seguidores' tag='DIV' type='' class='' check:innerText='Seguidores' /&gt;" Guid="38337432-97a7-468c-9e4a-7d6c6b4cfa84" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAFUAAAAcCAYAAAAQovP+AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAASFSURBVGhD7Zc3S2xdFIbvr7H3B9iKtVjYiIgWio0oooggFhZqoWLAgIWKoTCAhVnErKhgwoxizjnb7MuzYB32zD1j8enI4HeKl+GcvfYK717rPXv+hIWFGQ/fC4/UIMAjNQjwSA0CPFKDAI/UIMAjNQjwSA0CQprUkZER8/b2Zjo6OlzXQVxcnDk8PDS3t7cmIyPD1ean4UNqeHi4qaurM0dHR+b19dV8fHzI79ramomOjvbZ+BMYHh42z8/PprW11XUdhDyp7e3tQiKFbG5umpWVFSF0fX1dkrdtQwUhTSqduLu7ax4fH01xcfE/hqGKkCY1MjLSbG9vS5ciAbaRjZiYGDM6OirkIw8U09nZKdLBOr8tLS3ynvWbmxvT3d0tzxQPCRRvP6tvpoL4ZWVl8jw2NiY+7PEvLS01p6en5v39XXIYHBwUufIntbCwUJpEZYx1bKOiomRdczg5OTHLy8uOzLGWnZ0tk8o74uC/oKDA8V1TU2OOj49lDezt7ZmkpCRn3Wf8GxoazMvLi2B+ft6kpKQ4a4CEkATWZ2dnTVdXl5N4W1ub44NnCp6cnBQ8PDxI8K+SWlRUJL6Iv7i4aIaGhuTQ+JjZpFZUVEh8zaGnp8ecn59LDjQEB6854H91dVWahb25ubnm6urKXF9fm97eXgF2l5eXJisry8nh4uJC/AI4sA/Uh1TACdMJBCMJyNWAVVVVUjQnrvZ5eXnm7u5OujwhIcHp9srKSseGzufdV0nlIMmJztc9+fn5El9JZeI2NjbEjz1xaWlpQgyHkJmZ6eTAXmpQu+npaTkMWwKJRx78Njc3Sw4LCwsmIiJC1vnVSQX/kAowqq6udsilO+lSrjg8uwGCIIMTZFzi4+Mdf/4k/hdSY2NjzcHBgeyjY3QP+/GjpEIeXeafA7D9u+WgMfxrU5AP08vo88x+Op9msuO4kqqAyK2tLUmkvLzcKZITIykbqampJicnx5UsSLDfuxUEPiPVnzzd4//+K6TavkpKSsTGhtrBCzmptiMXyIbGcUhlA2Nts05LLy0tiYbV1taKXqJfJKeCb0OT8h8fPmTs0wIolqLt0dO9gUjlGe3DT1NTk+ObOMRTUvUWgx9bgjj0s7MzkQCIx9afVIBWE4Oc9Z0N6taxhx90nRz7+vocGx9StSi9o6q4MxKJiYlis7+/L+/4pWMRanSUk8VPf3+/rEMYAUmSzsGvFqCHRTL4xgf+KOYzUvUjiM3U1JT4hyQ+HEqq2tEIbh8qPjzYBCKV2wX79GPI3X18fFwOFDtuNlo7wC851dfXOz4cUikUB2giwSnm/v7ezM3N+XRvcnKycwPAht+dnR2nINVeCscP+kNA/wLS09NFWrDBlj36gQlEKjnSQeTFewilSPzapAL/aw+21IcP1gORCiBW9yoPExMT8hEkN3wF8gs+1dTvAl389PQksuG2/tsQdFI5wZmZGTlx+yr2m/HtpDY2NopODgwMiJYxXjom9lXoN+PbSUVzbF1m7BF5/vq52f9G/Iim/t/gkRoEeKQGAR6p344w8xdpCmwgN25MCgAAAABJRU5ErkJggg==" InformativeScreenshot="6edc2c77e3c00985d8f64bdea10e584d.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Vinícius Oliveira (@sollaris.v) • Fotos e vídeos do Instagram' /&gt;" SearchSteps="FuzzySelector, Image" Version="V1" Visibility="Interactive">
+                    <uix:TargetAnchorable.Anchors>
+                      <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                        <uix:Target DesignTimeRectangle="1128, 394, 13, 13" FriendlyName="'POLYLINE'" FullSelectorArgument="&lt;webctrl tag='polyline' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='polyline' type='' class='' aaname='' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADCSURBVDhPpdPBCQQhDAXQrcY+0oC12YANjK0pevbi8oVIdKPrsocPA/PzCGHmZYxp/6YjRNSe52nWWrWkBV3MYLYjzrlWa20xxisIHXQxg9mxSUrpCpIAZsYm/PIbtALcmQ57gnYAMiGIBp0A5ANBJJRz7tkBiIogKJdS+jCCZw1AjghvwBv9hKDMN8AGvNF6bI562PWIyHpsOTMhGiDf7aCBnADZ0aCO3ACcFRqfvff+CuBIaPoBQwhXAAddzBBRewOC7njUvw7rJQAAAABJRU5ErkJggg==" SearchSteps="FuzzySelector, Image" />
+                      </scg:List>
+                    </uix:TargetAnchorable.Anchors>
+                  </uix:TargetAnchorable>
+                </uix:NClick.Target>
+              </uix:NClick>
+              <uix:NKeyboardShortcuts ActivateBefore="True" ClickBeforeMode="None" DisplayName="Keyboard Shortcuts" sap:VirtualizedContainerService.HintSize="574,180" sap2010:WorkflowViewState.IdRef="NKeyboardShortcuts_1" Shortcuts="[d(hk)][k(tab)][u(hk)][d(hk)][k(tab)][u(hk)]" Version="V3" />
+              <ui:InterruptibleWhile CurrentIndex="{x:Null}" Condition="[contador &lt; limiteSeguidores]" DisplayName="While" sap:VirtualizedContainerService.HintSize="574,713" sap2010:WorkflowViewState.IdRef="InterruptibleWhile_1">
+                <ui:InterruptibleWhile.Body>
+                  <Sequence DisplayName="Corpo" sap:VirtualizedContainerService.HintSize="496,545" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="434,83" sap2010:WorkflowViewState.IdRef="Assign_3">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[contador]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">[contador + 1]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <uix:NKeyboardShortcuts ActivateBefore="True" ClickBeforeMode="None" DisplayName="Keyboard Shortcuts" sap:VirtualizedContainerService.HintSize="434,180" sap2010:WorkflowViewState.IdRef="NKeyboardShortcuts_2" Shortcuts="[d(hk)][k(end)][u(hk)]" Version="V3" />
+                    <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="434,91" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                  </Sequence>
+                </ui:InterruptibleWhile.Body>
+              </ui:InterruptibleWhile>
+              <uix:NExtractData AppendResults="False" ContinueOnError="True" DataTable="[dt_Seguidores]" DisplayName="Extract Table Data" ExtractDataSettings="&lt;Table xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' Type='Structured'&gt;&#xA;&#x9;&lt;Column xsi:type='DataColumn' Name='Nome' ReferenceName='Column0'&gt;&#xA;&#x9;&#x9;&lt;IsExtra&gt;false&lt;/IsExtra&gt;&#xA;&#x9;&#x9;&lt;CanExtractSimilar&gt;false&lt;/CanExtractSimilar&gt;&#xA;&#x9;&#x9;&lt;Format xsi:type='TextColumnFormat' /&gt;&#xA;&#x9;&lt;/Column&gt;&#xA;&#x9;&lt;Column xsi:type='DataColumn' Name='@' ReferenceName='Column1'&gt;&#xA;&#x9;&#x9;&lt;IsExtra&gt;false&lt;/IsExtra&gt;&#xA;&#x9;&#x9;&lt;CanExtractSimilar&gt;true&lt;/CanExtractSimilar&gt;&#xA;&#x9;&#x9;&lt;Format xsi:type='TextColumnFormat' /&gt;&#xA;&#x9;&lt;/Column&gt;&#xA;&lt;/Table&gt;" ExtractMetadata="&lt;extract&gt;&lt;row exact='1'&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' /&gt;&lt;webctrl tag='div' idx='2' /&gt;&lt;/row&gt;&lt;column exact='1' name='Column0' attr='text'&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' /&gt;&lt;webctrl tag='div' idx='2' /&gt;&lt;webctrl tag='div' idx='2' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;/column&gt;&lt;column exact='1' name='Column1' attr='text'&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' /&gt;&lt;webctrl tag='div' idx='2' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='span' idx='1' /&gt;&lt;webctrl tag='a' idx='1' /&gt;&lt;webctrl tag='span' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;/column&gt;&lt;/extract&gt;" sap:VirtualizedContainerService.HintSize="574,158" sap2010:WorkflowViewState.IdRef="NExtractData_1" LimitExtractionTo="None" MaximumResults="0" ScopeIdentifier="0361e395-2e13-4b19-b55b-901f3a4d9550" Version="V3">
+                <uix:NExtractData.Target>
+                  <uix:TargetAnchorable DesignTimeRectangle="710, 408, 500, 446" DesignTimeScaleFactor="1.25" FriendlyName="'lumberdimmylumberdimmyR…'" FullSelectorArgument="&lt;webctrl class='_aano' tag='DIV' /&gt;" Guid="19814e9e-f2a2-4c9a-b3db-124c8bc5700d" InformativeScreenshot="77f17619907b34ba9a6b22245c1783c5.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Vinícius Oliveira (@sollaris.v) • Fotos e vídeos do Instagram' /&gt;" SearchSteps="Selector" Version="V1" Visibility="Interactive" />
+                </uix:NExtractData.Target>
+              </uix:NExtractData>
+              <ui:OutputDataTable Text="{x:Null}" DataTable="[dt_Seguidores]" DisplayName="Output Data Table" sap:VirtualizedContainerService.HintSize="574,81" sap2010:WorkflowViewState.IdRef="OutputDataTable_1" />
+              <ui:WriteRange AddHeaders="False" DataTable="[dt_Seguidores]" DisplayName="Write Range Workbook" sap:VirtualizedContainerService.HintSize="574,116" sap2010:WorkflowViewState.IdRef="WriteRange_1" SheetName="Seguidores" StartingCell="A3" WorkbookPath="Data\Output\Planilha.xlsx" />
+            </Sequence>
+            <Sequence DisplayName="Extrair seguindo" sap:VirtualizedContainerService.HintSize="636,2484" sap2010:WorkflowViewState.IdRef="Sequence_17">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <uix:NGoToUrl DisplayName="Go To URL" sap:VirtualizedContainerService.HintSize="574,83" sap2010:WorkflowViewState.IdRef="NGoToUrl_3" Url="[&quot;https://www.instagram.com/&quot; + perfil + &quot;/following/&quot;]" Version="V3">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </uix:NGoToUrl>
+              <If Condition="[limiteSeguindo &gt;= 1000]" sap:VirtualizedContainerService.HintSize="574,477" sap2010:WorkflowViewState.IdRef="If_3">
+                <If.Then>
+                  <Sequence sap:VirtualizedContainerService.HintSize="496,194" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="434,83" sap2010:WorkflowViewState.IdRef="Assign_6">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[limiteSeguindo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">1000</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                </If.Then>
+                <If.Else>
+                  <Sequence sap:VirtualizedContainerService.HintSize="400,104" sap2010:WorkflowViewState.IdRef="Sequence_15">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Sequence>
+                </If.Else>
+              </If>
+              <uix:NClick ClickType="Single" DisplayName="Click 'Seguindo'" sap:VirtualizedContainerService.HintSize="574,158" sap2010:WorkflowViewState.IdRef="NClick_3" KeyModifiers="None" MouseButton="Left" ScopeIdentifier="0361e395-2e13-4b19-b55b-901f3a4d9550" Version="V3">
+                <uix:NClick.Target>
+                  <uix:TargetAnchorable BrowserURL="https://www.instagram.com/sollaris.v/following/?hl=pt-br" DesignTimeRectangle="925, 389, 69, 24" DesignTimeScaleFactor="1" ElementType="Text" FriendlyName="'Seguindo'" FullSelectorArgument="&lt;webctrl aaname='Seguindo' parentid='mount_0_0_8/' tag='DIV' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname='Seguindo' parentid='mount_0_0_8/' tag='DIV' type='' class='' check:innerText='Seguindo' /&gt;" Guid="16be7b18-d658-45ec-a957-2ea554dae0d4" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAAEkAAAAcCAYAAAAtMJKYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAPOSURBVGhD7ZfLK29RFMfvX/Ob+wPMjWWgJEmJlMSApGSglIEMGJAB5VFeoeSZKCEl8kh+P+SV8n6/JkufVfu0f8e57rl+58rvdgbfdmfvtdde67vXY59fkUhEQnyOkCQfCEnygZAkHwhJ8oGQJB8ISfKBkCQf+NEkzczMyMvLi/T393uu/w3m5ubk7e1Nuru7Pdc/QxxJGRkZMjU1JVdXV/L6+qpKHx4eZHh4OG7Td2F6eloeHx+/5JgbgZCUlpYm6+vrqujy8lI2Nzf1e3d3V4mzNyUjAiGprq5O7u7uZH9/XyPKFvofEAhJ1dXVcnNzI6enp1JYWPhB0AACZ2dn5f7+Xg+9vr6WgYEBSUlJ0XXGrq4unWed1CVd+T46OpLs7GwpKyuL+za6t7a2NL0aGxv12+0YI9/z8/Nar5ClLGxvb0teXp6jp6CgQLPg+flZsbGxIYuLix9Iqqio0LWnpyddw6fl5WXJyspyZIBDEs6trKzooTgwODioKWgLm5RE6dLSksrs7e2pIT09PSrT3t6u3xyIM4AIRW9QJKEvFovJ2NiYnJ2d6dzCwoLKcInYxHkHBwcyOjqqIzbZuqqqquTi4kJ9WV1d1YtEjn34aPseV7hTU1NlaGjIiRJGosJESXNzszoxOTnp7DERGI1GJTc3V0dkmpqaHJnW1ladC4qknZ0dxwlk2QMx6enp0tLSoo7bMox827ogFULspgTBlBvbBhBHkgHhxg1AEjfQ19en84Q4B3kBh1HMzR4fH0tOTo6jz01KoiQxb/a4dRkbe3t7HRlg68rMzJTDw0PdV15e/ls5M+dJkkFNTY1GiXHaKIB9jLNRVFQklZWVns5jyHeR5OUksOe/TFJ9fb0+2kg5M1dSUiLn5+dazPPz87Xe8LjDGTtnDTASY4lA9Jl5Cjv7jCMQDvFcAOlq702UpM7OTk2jtbU1p0yYNLJ1UYewCduMLnyi1rntd0jCMAw0bySIuL291QPpZhyIEaa4MRJRpCV1qKGhQfWMj4/rOgTwvsIYdKLbOIIunMBobtQUV4xOlKTi4mJNeWyg642MjKhuuqytiycPNroLNzbQwAzBwCGJOkT7gxiUcQiHuaPLtFfTNhlhH2NZ5zbs9nxyciJtbW0f0qu0tFSLKTLIsgenEiWJudraWj3X1k2XtXUZOdOdWUMPTcmdJZ/WpKBAlPF7Q3R6rf90/HOSCFvzkLOfDsmEwEnq6OjQOjMxMaG1hjQg7GkA7k6SLAicJOqJKZxED2nG059fAC/5ZMC31KRkR0iSD4Qk+UBI0h8RkXdqufyncTYvBAAAAABJRU5ErkJggg==" InformativeScreenshot="d7ca679a2e63066af3cae508c1409344.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Vinícius Oliveira (@sollaris.v) • Fotos e vídeos do Instagram' /&gt;" SearchSteps="FuzzySelector, Image" Version="V1" Visibility="Interactive">
+                    <uix:TargetAnchorable.Anchors>
+                      <scg:List x:TypeArguments="uix:ITarget" Capacity="4">
+                        <uix:Target DesignTimeRectangle="1128, 394, 13, 13" FriendlyName="'POLYLINE'" FullSelectorArgument="&lt;webctrl tag='polyline' /&gt;" FuzzySelectorArgument="&lt;webctrl tag='polyline' type='' class='' aaname='' /&gt;" ImageBase64="iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADCSURBVDhPpdPBCQQhDAXQrcY+0oC12YANjK0pevbi8oVIdKPrsocPA/PzCGHmZYxp/6YjRNSe52nWWrWkBV3MYLYjzrlWa20xxisIHXQxg9mxSUrpCpIAZsYm/PIbtALcmQ57gnYAMiGIBp0A5ANBJJRz7tkBiIogKJdS+jCCZw1AjghvwBv9hKDMN8AGvNF6bI562PWIyHpsOTMhGiDf7aCBnADZ0aCO3ACcFRqfvff+CuBIaPoBQwhXAAddzBBRewOC7njUvw7rJQAAAABJRU5ErkJggg==" SearchSteps="FuzzySelector, Image" />
+                      </scg:List>
+                    </uix:TargetAnchorable.Anchors>
+                  </uix:TargetAnchorable>
+                </uix:NClick.Target>
+              </uix:NClick>
+              <uix:NKeyboardShortcuts ActivateBefore="True" ClickBeforeMode="None" DisplayName="Keyboard Shortcuts" sap:VirtualizedContainerService.HintSize="574,180" sap2010:WorkflowViewState.IdRef="NKeyboardShortcuts_5" Shortcuts="[d(hk)][k(tab)][u(hk)][d(hk)][k(tab)][u(hk)]" Version="V3" />
+              <Assign sap:VirtualizedContainerService.HintSize="574,83" sap2010:WorkflowViewState.IdRef="Assign_8">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Int32">[contador]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Int32">0</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:InterruptibleWhile CurrentIndex="{x:Null}" DisplayName="While" sap:VirtualizedContainerService.HintSize="574,713" sap2010:WorkflowViewState.IdRef="InterruptibleWhile_3">
+                <ui:InterruptibleWhile.Body>
+                  <Sequence DisplayName="Corpo" sap:VirtualizedContainerService.HintSize="496,545" sap2010:WorkflowViewState.IdRef="Sequence_16">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="434,83" sap2010:WorkflowViewState.IdRef="Assign_7">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[contador]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">[contador + 1]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <uix:NKeyboardShortcuts ActivateBefore="True" ClickBeforeMode="None" DisplayName="Keyboard Shortcuts" sap:VirtualizedContainerService.HintSize="434,180" sap2010:WorkflowViewState.IdRef="NKeyboardShortcuts_6" Shortcuts="[d(hk)][k(end)][u(hk)]" Version="V3" />
+                    <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="434,91" sap2010:WorkflowViewState.IdRef="Delay_3" />
+                  </Sequence>
+                </ui:InterruptibleWhile.Body>
+                <ui:InterruptibleWhile.Condition>
+                  <VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="contador &lt; limiteSeguindo" />
+                </ui:InterruptibleWhile.Condition>
+              </ui:InterruptibleWhile>
+              <uix:NExtractData AppendResults="False" ContinueOnError="True" DataTable="[dt_Seguidores]" DisplayName="Extract Table Data" ExtractDataSettings="&lt;Table xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' Type='Structured'&gt;&#xA;&#x9;&lt;Column xsi:type='DataColumn' Name='Nome' ReferenceName='Column0'&gt;&#xA;&#x9;&#x9;&lt;IsExtra&gt;false&lt;/IsExtra&gt;&#xA;&#x9;&#x9;&lt;CanExtractSimilar&gt;false&lt;/CanExtractSimilar&gt;&#xA;&#x9;&#x9;&lt;Format xsi:type='TextColumnFormat' /&gt;&#xA;&#x9;&lt;/Column&gt;&#xA;&#x9;&lt;Column xsi:type='DataColumn' Name='@' ReferenceName='Column1'&gt;&#xA;&#x9;&#x9;&lt;IsExtra&gt;false&lt;/IsExtra&gt;&#xA;&#x9;&#x9;&lt;CanExtractSimilar&gt;true&lt;/CanExtractSimilar&gt;&#xA;&#x9;&#x9;&lt;Format xsi:type='TextColumnFormat' /&gt;&#xA;&#x9;&lt;/Column&gt;&#xA;&lt;/Table&gt;" ExtractMetadata="&lt;extract&gt;&lt;row exact='1'&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' /&gt;&lt;webctrl tag='div' idx='2' /&gt;&lt;/row&gt;&lt;column exact='1' name='Column0' attr='text'&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' /&gt;&lt;webctrl tag='div' idx='2' /&gt;&lt;webctrl tag='div' idx='2' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;/column&gt;&lt;column exact='1' name='Column1' attr='text'&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' /&gt;&lt;webctrl tag='div' idx='2' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;webctrl tag='span' idx='1' /&gt;&lt;webctrl tag='a' idx='1' /&gt;&lt;webctrl tag='span' idx='1' /&gt;&lt;webctrl tag='div' idx='1' /&gt;&lt;/column&gt;&lt;/extract&gt;" sap:VirtualizedContainerService.HintSize="574,158" sap2010:WorkflowViewState.IdRef="NExtractData_3" LimitExtractionTo="None" MaximumResults="0" ScopeIdentifier="0361e395-2e13-4b19-b55b-901f3a4d9550" Version="V3">
+                <uix:NExtractData.Target>
+                  <uix:TargetAnchorable DesignTimeRectangle="710, 408, 500, 446" DesignTimeScaleFactor="1.25" FriendlyName="'lumberdimmylumberdimmyR…'" FullSelectorArgument="&lt;webctrl class='_aano' tag='DIV' /&gt;" Guid="19814e9e-f2a2-4c9a-b3db-124c8bc5700d" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Vinícius Oliveira (@sollaris.v) • Fotos e vídeos do Instagram' /&gt;" SearchSteps="Selector" Version="V1" Visibility="Interactive">
+                    <uix:TargetAnchorable.Anchors>
+                      <scg:List x:TypeArguments="uix:ITarget" Capacity="0" />
+                    </uix:TargetAnchorable.Anchors>
+                  </uix:TargetAnchorable>
+                </uix:NExtractData.Target>
+              </uix:NExtractData>
+              <ui:OutputDataTable Text="{x:Null}" DataTable="[dt_Seguidores]" DisplayName="Output Data Table" sap:VirtualizedContainerService.HintSize="574,81" sap2010:WorkflowViewState.IdRef="OutputDataTable_3" />
+              <ui:WriteRange AddHeaders="False" DataTable="[dt_Seguidores]" DisplayName="Write Range Workbook" sap:VirtualizedContainerService.HintSize="574,116" sap2010:WorkflowViewState.IdRef="WriteRange_3" SheetName="Seguindo" StartingCell="A3" WorkbookPath="Data\Output\Planilha.xlsx" />
+            </Sequence>
+          </Sequence>
+        </ActivityAction>
+      </uix:NApplicationCard.Body>
+      <uix:NApplicationCard.TargetApp>
+        <uix:TargetApp Area="0, 0, 0, 0" BrowserType="Chrome" IconBase64="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" Selector="&lt;html app='chrome.exe' title='Vinícius Oliveira (@sollaris.v) • Fotos e vídeos do Instagram' /&gt;" Url="[&quot;https://www.instagram.com/&quot; + perfil]" />
+      </uix:NApplicationCard.TargetApp>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </uix:NApplicationCard>
+  </Sequence>
+</Activity>
